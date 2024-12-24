@@ -12,6 +12,7 @@ type Props = {};
 
 const PostList = (props: Props) => {
 	const [posts, setPosts] = useState<DocumentData[]>([]);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		const fetchPosts = async () => {
@@ -22,13 +23,16 @@ const PostList = (props: Props) => {
 				doc.data()
 			);
 			setPosts(postData);
+			setLoading(false);
 		};
 
 		fetchPosts();
 	}, []);
 	return (
-		<div className='p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
-			{posts.length > 0 ? (
+		<div className='px-8 py-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
+			{loading ? (
+				<p>Fetching Posts...</p>
+			) : posts.length > 0 ? (
 				posts.map((post, index) => (
 					<Post
 						key={index}
